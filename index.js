@@ -27,6 +27,8 @@ app.get('/api/product',(req,res)=>{
 });
 
 app.get('/api/product/:productId',(req,res) => {
+	// esta es una manera abreviada de concatenar en JavaScript
+	// res.send(` Variable enviada: ${req.params.productId}`)
 
 	Product.findById(req.params.productId, (err, product) => {
 		if(err) return res.status(500).send({mensaje: `Error al realizar la consulta: ${err}`});
@@ -40,7 +42,7 @@ app.get('/api/product/:productId',(req,res) => {
 app.post('/api/product',(req,res)=>{
 	console.log('POST /api/product')
 	console.log(req.body)
-	
+
 	let product = new Product();
 	product.name = req.body.name;
 	product.picture = req.body.picture;
@@ -50,7 +52,7 @@ app.post('/api/product',(req,res)=>{
 
 	product.save((err, productStored)=>{
 		if (err) res.status(500).send({Mensaje:`Error al salvar los datos: ${err} `})
-		
+
 		res.status(200).send({product: productStored});
 	});
 });
@@ -70,7 +72,7 @@ mongoose.connect('mongodb://localhost:27017/prueba_nodejs',(err,res)=>{
 mongoose.connect('mongodb://mlopez:12345678@ds119060.mlab.com:19060/shopmlopez',(err,res)=>{
 	if(err){
 		return console.log(`Error al conectar a la base de datos: ${err}`);
-	} 
+	}
 		console.log('Conexion a la base de datos establecida correctamente...');
 
 	app.listen(port, () => {
@@ -79,4 +81,3 @@ mongoose.connect('mongodb://mlopez:12345678@ds119060.mlab.com:19060/shopmlopez',
 
 
 });
-
