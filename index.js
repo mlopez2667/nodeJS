@@ -28,17 +28,12 @@ app.get('/api/product',(req,res)=>{
 
 app.get('/api/product/:productId',(req,res) => {
 
-	var productId = req.params('productID');
-
-	res.status(200).send(productId)
-	console.log(productId)
-
-	/*Product.findById(productId, (error, product) => {
+	Product.findById(req.params.productId, (err, product) => {
 		if(err) return res.status(500).send({mensaje: `Error al realizar la consulta: ${err}`});
 		if(!product) return	res.status(404).send({mensaje: 'EL producto no existe'});
-	
+
 		res.status(200).send({ product })
-	});*/
+	});
 
 });
 
