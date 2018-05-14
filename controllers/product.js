@@ -69,10 +69,25 @@ function deleteProduct(req,res) {
 	});
 }
 
+function getProductsCategory(req,res) {
+
+	let category = req.params.category;
+	
+	Product.find({ 'category': category }, (err, products)=>{
+		console.log(err);
+		if(err) return res.status(500).send({mensaje: `Error al realizar la consulta: ${err}`});
+		if(!products) return res.status(404).send({mensaje: "No Existen Productos cn esa categoria"});
+        
+		res.status(200,{products});
+	})/*res.status(200).send(category);*/
+}
+
+
 module.exports = {
 	getProduct,
 	getProducts,
 	saveProduct,
 	updateProduct,
-	deleteProduct
+	deleteProduct,
+	getProductsCategory
 }

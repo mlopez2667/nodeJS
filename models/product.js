@@ -7,7 +7,7 @@ const ProductSchema = Schema({
 	name: String,
 	picture: String,
 	price: {type: Number, default:0},
-	category: {type: String, enum: ['computer','phones','accesories','laptop']},
+	category: [{type: String}],
 	description: String
 });
 
