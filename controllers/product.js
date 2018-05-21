@@ -34,11 +34,14 @@ function saveProduct(req,res){
 	let product = new Product();
 	product.name = req.body.name;
 	product.picture = req.body.picture;
-	product.price = req.body.price;
-	product.category= req.body.category;
+	product.category = req.body.category;
 	product.description = req.body.description;
+	product.office = req.body.office;
+
 
 	product.save((err, productStored)=>{
+		console.log(req.body.price);
+		console.log(req.body.ubication);
 		if (err) res.status(500).send({Mensaje:`Error al salvar los datos: ${err} `})
 
 		res.status(200).send({product: productStored});
@@ -72,16 +75,59 @@ function deleteProduct(req,res) {
 function getProductsCategory(req,res) {
 
 	let category = req.params.category;
-	
-	Product.find({ 'category': category }, (err, products)=>{
-		console.log(err);
+
+	Product.find({ category : { $all : [category] }}, (err, products)=>{
 		if(err) return res.status(500).send({mensaje: `Error al realizar la consulta: ${err}`});
 		if(!products) return res.status(404).send({mensaje: "No Existen Productos cn esa categoria"});
         
-		res.status(200,{products});
-	})/*res.status(200).send(category);*/
+		res.status(200).send({products});
+	})/*console.log(err);
+		console.log(category);*/
 }
 
+function getProductsUbication(req,res) {
+
+	let ubication = req.params.ubication;
+
+	Product.find({"office.ubication" : { $in : [ubication]}}, (err, products)=>{
+		if(err) return res.status(500).send({mensaje: `Error al realizar la consulta: ${err}`});
+		if(!products) return res.status(404).send({mensaje: "No Existe Productos cn esa categoria"});
+
+		res.status(200).send({products});
+	})/*console.log(err);
+		console.log(category);*/
+}
+
+function updateUbication(req,res) {
+	
+	let ubication = req.body.ubication;
+	let price = Number(req.body.price);
+
+	Product.update({ _id : req.params.productId , "office.price": price}, 
+   { $set : {"office.$.ubication": ubication}}, (err, productUpd) =>{
+		if(err) res.status(500).send({mensaje: `Error al actualizar el proucto: ${err}`});
+
+		res.status(200).send({product: productUpd })
+
+	}) 
+}
+
+function updateCategory(req,res) {
+	
+	let category = req.body.category;
+	let newcategory = req.body.newcategory;
+
+	console.log(category);
+	console.log(newcategory);
+
+	Product.update({ _id : req.params.productId , category: category}, 
+   { $set : {"category.$": newcategory}}, (err, productUpd) =>{
+		if(err) res.status(500).send({mensaje: `Error al actualizar el proucto: ${err}`});
+
+		res.status(200).send({product: productUpd })
+
+	}) 
+}
 
 module.exports = {
 	getProduct,
@@ -89,5 +135,8 @@ module.exports = {
 	saveProduct,
 	updateProduct,
 	deleteProduct,
-	getProductsCategory
+	getProductsCategory,
+	getProductsUbication,
+	updateUbication,
+	updateCategory
 }

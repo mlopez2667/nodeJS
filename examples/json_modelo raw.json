@@ -1,0 +1,19 @@
+{
+        "description": "descripcion",
+        "picture": "#",
+        "name": "Veronica",
+        "office": [
+            {
+		      "price": 8000,
+		      "ubication": "San Antonio de los Altos"
+		    },
+		    {
+		      "price": 5000,
+		      "ubication": "Cojedes"
+		    }
+        ],
+        "category": [
+            "lenovo",
+            "laptop"
+        ]
+    }
